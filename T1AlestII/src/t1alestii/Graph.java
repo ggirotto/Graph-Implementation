@@ -3,13 +3,30 @@ package t1alestii;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.NoSuchElementException;
 
-public class Graph<N, A> implements GraphTAD<N, A> {
+public class Graph<N,A,E> implements GraphTAD<N,A>, Iterator<E> {
+    
+    @Override
+    public boolean hasNext() {
+        
+        matrixNode elem = matrizAdjacencias.getElementoLinha(iteratorIndex);
+        return elem == null;
+        
+    }
+
+    @Override
+    public E next() {
+        
+        if(hasNext()){
+            return (E)matrizAdjacencias.getElementoLinha(iteratorIndex++).getDado();
+        }else{
+            throw new NoSuchElementException("Não existem mais elementos");
+        }
+        
+    }
 
     public class matrixNode {
 
@@ -24,14 +41,16 @@ public class Graph<N, A> implements GraphTAD<N, A> {
         }
 
     }
-
-    Matrix matrizAdjacencias;
-    HashMap<N, matrixNode> listaNodos;
+    
+    private int iteratorIndex;
+    private final Matrix matrizAdjacencias;
+    private final HashMap<N, matrixNode> listaNodos;
 
     public Graph() {
 
         matrizAdjacencias = new Matrix();
         listaNodos = new HashMap<>();
+        iteratorIndex = 0;
 
     }
 
