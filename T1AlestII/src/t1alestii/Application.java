@@ -17,11 +17,17 @@ public class Application {
             
             if(line.matches("[0-9]+")) grafo.addNode(line);
             
-            if(line.equals("aresta")) grafo.addEdge(in.next(), in.next(), in.next());
+            if(line.equals("a")) grafo.addEdge(in.next(), in.next(), in.next());
             
             if(line.equals("rnodo")) grafo.removeNode(in.next());
             
             if(line.equals("raresta")) grafo.removeEdge(in.next(),in.next(),in.next());
+            
+            if(line.equals("findpath")) System.out.println(grafo.GenericArrayToString(grafo.findPath(in.next(),in.next())));
+            
+            if(line.equals("tw")) System.out.println(grafo.GenericArrayToString(grafo.traversalWidth(in.next())));
+            
+            if(line.equals("td")) System.out.println(grafo.GenericArrayToString(grafo.traversalDepth(in.next())));
             
             if(line.equals("quit")) System.exit(0);
             
