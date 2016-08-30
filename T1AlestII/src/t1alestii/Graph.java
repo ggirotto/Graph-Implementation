@@ -5,28 +5,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
 
-public class Graph<N,A,E> implements GraphTAD<N,A>, Iterator<E> {
-    
-    @Override
-    public boolean hasNext() {
-        
-        matrixNode elem = matrizAdjacencias.getElementoLinha(iteratorIndex);
-        return elem == null;
-        
-    }
-
-    @Override
-    public E next() {
-        
-        if(hasNext()){
-            return (E)matrizAdjacencias.getElementoLinha(iteratorIndex++).getDado();
-        }else{
-            throw new NoSuchElementException("Não existem mais elementos");
-        }
-        
-    }
+public class Graph<N,A,E> implements GraphTAD<N,A> {
 
     public class matrixNode {
 
@@ -207,12 +187,16 @@ public class Graph<N,A,E> implements GraphTAD<N,A>, Iterator<E> {
 
     @Override
     public Iterator<N> iteratorWidth(N origem) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        return traversalWidth(origem).iterator();
+        
     }
 
     @Override
     public Iterator<N> iteratorDepth(N origem) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        return traversalDepth(origem).iterator();
+        
     }
 
     public String GenericArrayToString(List<N> l) {
