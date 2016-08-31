@@ -22,7 +22,6 @@ public class Graph<N,A,E> implements GraphTAD<N,A> {
 
     }
     
-    private int iteratorIndex;
     private final Matrix matrizAdjacencias;
     private final HashMap<N, matrixNode> listaNodos;
 
@@ -30,7 +29,6 @@ public class Graph<N,A,E> implements GraphTAD<N,A> {
 
         matrizAdjacencias = new Matrix();
         listaNodos = new HashMap<>();
-        iteratorIndex = 0;
 
     }
 
@@ -54,22 +52,26 @@ public class Graph<N,A,E> implements GraphTAD<N,A> {
     }
 
     @Override
-    public void removeNode(N elem) {
-
-        matrixNode remove = listaNodos.get(elem);
-        if (remove == null) {
-            return;
-        }
+    public void removeNode(N elem) throws GraphException{
+        
+        matrixNode remove = listaNodos.remove(elem);
+        if (remove == null)
+            throw new GraphException("Este nodo não existe no grafo!");
+        
         matrizAdjacencias.removeNodo(remove);
-        listaNodos.remove(elem);
 
     }
 
     @Override
-    public void removeEdge(N orig, N dest, A val) {
+    public void removeEdge(N orig, N dest, A val) throws GraphException {
 
         matrixNode nodoOrigem = listaNodos.get(orig);
         matrixNode nodoDestino = listaNodos.get(dest);
+        
+        if(nodoOrigem == null)
+            throw new GraphException("O nodo de origem não existe no grafo");
+        else if(nodoDestino == null)
+            throw new GraphException("O nodo de destino não existe no grafo");
 
         matrizAdjacencias.removeEdge(nodoOrigem, nodoDestino, val);
 
@@ -77,8 +79,8 @@ public class Graph<N,A,E> implements GraphTAD<N,A> {
 
     @Override
     public List<N> traversalDepth(N orig) {
-        
-        ArrayList<N> caminhoPercorrido = new ArrayList<>();
+       
+       ArrayList<N> caminhoPercorrido = new ArrayList<>();
        HashSet<matrixNode> nodosMarcados = new HashSet<>();
        traversalDepth(orig,caminhoPercorrido, nodosMarcados);
        return caminhoPercorrido;
@@ -105,11 +107,12 @@ public class Graph<N,A,E> implements GraphTAD<N,A> {
     }
 
     @Override
-    public List<N> traversalWidth(N orig) {
+    public List<N> traversalWidth(N orig) throws GraphException {
         
-        matrixNode arbitrary = listaNodos.get(orig);
+       matrixNode arbitrary = listaNodos.get(orig);
        
-       if(arbitrary == null) return null;
+       if(arbitrary == null)
+           throw new GraphException("O nodo de origem não existe no grafo");
        
        HashSet<matrixNode> nodosVisitados = new HashSet<>();
        ArrayList<N> caminhoPercorrido = new ArrayList<>();
@@ -186,14 +189,14 @@ public class Graph<N,A,E> implements GraphTAD<N,A> {
     }
 
     @Override
-    public Iterator<N> iteratorWidth(N origem) {
+    public Iterator<N> iteratorWidth(N origem) throws GraphException {
         
         return traversalWidth(origem).iterator();
         
     }
 
     @Override
-    public Iterator<N> iteratorDepth(N origem) {
+    public Iterator<N> iteratorDepth(N origem) throws GraphException {
         
         return traversalDepth(origem).iterator();
         
@@ -211,6 +214,18 @@ public class Graph<N,A,E> implements GraphTAD<N,A> {
         }
         return resultado;
     }
+    
+    public String GenericIteratorToString(Iterator<N> l) {
+
+        if (l == null) {
+            return null;
+        }
+
+        String resultado = "";
+        while(l.hasNext())
+            resultado += l.next() + " ";
+        return resultado;
+    }
 
     @Override
     public String toString() {
@@ -221,9 +236,9 @@ public class Graph<N,A,E> implements GraphTAD<N,A> {
             resultado += n.getDado() + "(";
             int linhaNodo = matrizAdjacencias.getLinhaDoDado(n);
             ArrayList<matrixNode> adjacentes = matrizAdjacencias.getAdjacentes(linhaNodo);
-            for (matrixNode p : adjacentes) {
+            for (matrixNode p : adjacentes)
                 resultado += "[" + p.getDado() + "-" + matrizAdjacencias.getDado(linhaNodo, matrizAdjacencias.getLinhaDoDado(p)) + "]";
-            }
+                
             resultado += ")";
         }
         return resultado;

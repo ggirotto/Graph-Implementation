@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Application {
     
-    public static void main(String args[]){
+    public static void main(String args[]) throws GraphException{
         
         Graph grafo = new Graph();
         
@@ -28,6 +28,10 @@ public class Application {
             if(line.equals("tw")) System.out.println(grafo.GenericArrayToString(grafo.traversalWidth(in.next())));
             
             if(line.equals("td")) System.out.println(grafo.GenericArrayToString(grafo.traversalDepth(in.next())));
+            
+            if(line.equals("it")) System.out.println(grafo.GenericIteratorToString(grafo.iteratorWidth(in.next())));
+            
+            if(line.equals("id")) System.out.println(grafo.GenericIteratorToString(grafo.iteratorDepth(in.next())));
             
             if(line.equals("quit")) System.exit(0);
             
