@@ -23,6 +23,8 @@ public class Application {
             
             if(line.equals("raresta")) grafo.removeEdge(in.next(),in.next(),in.next());
             
+            if(line.equals("size")) System.out.println(grafo.size());
+            
             if(line.equals("findpath")) System.out.println(grafo.GenericArrayToString(grafo.findPath(in.next(),in.next())));
             
             if(line.equals("tw")) System.out.println(grafo.GenericArrayToString(grafo.traversalWidth(in.next())));
