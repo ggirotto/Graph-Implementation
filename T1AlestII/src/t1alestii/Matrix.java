@@ -33,7 +33,7 @@ public class Matrix<N> {
 
     public void addNodo(matrixNode o) {
 
-        if (cont > size) {
+        if (cont >= size) {
             resize();
         }
 
