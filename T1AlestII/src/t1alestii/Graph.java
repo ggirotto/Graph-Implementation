@@ -229,7 +229,9 @@ public class Graph<N,A,E> implements GraphTAD<N,A> {
 
     @Override
     public String toString() {
-
+        
+        //TODO passar de hashmap para arraylist para ter ordem!!!!!
+        
         String resultado = "";
         for (matrixNode n : listaNodos.values()) {
 
