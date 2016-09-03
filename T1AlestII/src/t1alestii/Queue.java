@@ -4,7 +4,6 @@ public class Queue<N> {
 
   // ReferÃªncia para  o primeiro elemento
   private Node first;
-  private Node last;
 
   /*
    Node
@@ -13,28 +12,30 @@ public class Queue<N> {
   */
   public class Node {
     Node next;
-    N dado;
+    N nodo;
 
     Node( N newData ) {
-      dado = newData;
+      nodo = newData;
       next = null;
     }
   }
 
   public Queue() {
     first = null;
-    last = null;
   }
 
   public void insert( N data ) {
+    
     Node p = new Node( data );
-    p.next = null;
     if(first == null){
         first = p;
-        last = p;
         return;
     }
-    last.next = p;
+    
+    Node aux = first;
+    while(aux.next != null)
+        aux = aux.next;
+    aux.next = p;
   }
   
   public void remove(){
@@ -51,15 +52,5 @@ public class Queue<N> {
   
   public boolean isEmpty(){
       return first == null;
-  }
-
-  public void print( )  {
-    System.out.print( "[ " );
-    Node p = first;
-    while ( p!= null ) {
-      System.out.print( p.dado + " " );
-      p = p.next;
-    }
-    System.out.println( "]" );
   }
 }

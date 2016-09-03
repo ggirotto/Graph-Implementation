@@ -1,13 +1,13 @@
 package t1alestii;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 
-public class Graph<N,A,E> implements GraphTAD<N,A> {
-
+public class Graph<N, A, E> implements GraphTAD<N, A> {
+    
     public class matrixNode {
 
         private final N dado;
@@ -23,12 +23,12 @@ public class Graph<N,A,E> implements GraphTAD<N,A> {
     }
     
     private final Matrix matrizAdjacencias;
-    private final HashMap<N, matrixNode> listaNodos;
+    private final LinkedHashMap<N, matrixNode> listaNodos;
 
     public Graph() {
 
         matrizAdjacencias = new Matrix();
-        listaNodos = new HashMap<>();
+        listaNodos = new LinkedHashMap<>();
 
     }
 
@@ -52,12 +52,13 @@ public class Graph<N,A,E> implements GraphTAD<N,A> {
     }
 
     @Override
-    public void removeNode(N elem) throws GraphException{
-        
+    public void removeNode(N elem) throws GraphException {
+
         matrixNode remove = listaNodos.remove(elem);
-        if (remove == null)
+        if (remove == null) {
             throw new GraphException("Este nodo não existe no grafo!");
-        
+        }
+
         matrizAdjacencias.removeNodo(remove);
 
     }
@@ -67,11 +68,12 @@ public class Graph<N,A,E> implements GraphTAD<N,A> {
 
         matrixNode nodoOrigem = listaNodos.get(orig);
         matrixNode nodoDestino = listaNodos.get(dest);
-        
-        if(nodoOrigem == null)
+
+        if (nodoOrigem == null) {
             throw new GraphException("O nodo de origem não existe no grafo");
-        else if(nodoDestino == null)
+        } else if (nodoDestino == null) {
             throw new GraphException("O nodo de destino não existe no grafo");
+        }
 
         matrizAdjacencias.removeEdge(nodoOrigem, nodoDestino, val);
 
@@ -79,72 +81,75 @@ public class Graph<N,A,E> implements GraphTAD<N,A> {
 
     @Override
     public List<N> traversalDepth(N orig) {
-       
-       ArrayList<N> caminhoPercorrido = new ArrayList<>();
-       HashSet<matrixNode> nodosMarcados = new HashSet<>();
-       traversalDepth(orig,caminhoPercorrido, nodosMarcados);
-       return caminhoPercorrido;
-       
+
+        ArrayList<N> caminhoPercorrido = new ArrayList<>();
+        HashSet<matrixNode> nodosMarcados = new HashSet<>();
+        traversalDepth(orig, caminhoPercorrido, nodosMarcados);
+        return caminhoPercorrido;
+
     }
-    
-    private List<N> traversalDepth(N orig, ArrayList<N> caminhoPercorrido, HashSet<matrixNode> nodosMarcados){
-        
-       matrixNode arbitrary = listaNodos.get(orig);
-       
-       caminhoPercorrido.add(arbitrary.dado);
-       nodosMarcados.add(arbitrary);
-             
-       int linhaNodo = matrizAdjacencias.getLinhaDoDado(arbitrary);
-       ArrayList<matrixNode> adjacentes = matrizAdjacencias.getAdjacentes(linhaNodo);
-       
-       for(matrixNode n : adjacentes){
-           if(nodosMarcados.contains(n) == false)
-               traversalDepth((N)n.getDado(), caminhoPercorrido,nodosMarcados);
-       }
-       
-       return caminhoPercorrido;
-       
+
+    private List<N> traversalDepth(N orig, ArrayList<N> caminhoPercorrido, HashSet<matrixNode> nodosMarcados) {
+
+        matrixNode arbitrary = listaNodos.get(orig);
+
+        caminhoPercorrido.add(arbitrary.dado);
+        nodosMarcados.add(arbitrary);
+
+        int linhaNodo = matrizAdjacencias.getLinhaDoDado(arbitrary);
+        ArrayList<matrixNode> adjacentes = matrizAdjacencias.getAdjacentes(linhaNodo);
+
+        for (matrixNode n : adjacentes) {
+            if (nodosMarcados.contains(n) == false) {
+                traversalDepth((N) n.getDado(), caminhoPercorrido, nodosMarcados);
+            }
+        }
+
+        return caminhoPercorrido;
+
     }
 
     @Override
     public List<N> traversalWidth(N orig) throws GraphException {
-        
-       matrixNode arbitrary = listaNodos.get(orig);
-       
-       if(arbitrary == null)
-           throw new GraphException("O nodo de origem não existe no grafo");
-       
-       HashSet<matrixNode> nodosVisitados = new HashSet<>();
-       ArrayList<N> caminhoPercorrido = new ArrayList<>();
-       Queue Q = new Queue();
-       
-       nodosVisitados.add(arbitrary);
-       caminhoPercorrido.add(arbitrary.dado);
-       Q.insert(arbitrary);
-       
-       while(!Q.isEmpty()){
-           
-           arbitrary = (matrixNode)Q.get().dado;
-           
-           int linhaNodo = matrizAdjacencias.getLinhaDoDado(arbitrary);
-           
-           ArrayList<matrixNode> adjacentes = matrizAdjacencias.getAdjacentes(linhaNodo);
-           
-           for(matrixNode n : adjacentes){
-               
-               if(nodosVisitados.contains(n) == false){
-                   arbitrary = n;
-                   if(arbitrary.getDado().equals(orig))
-                       return caminhoPercorrido;
-                   nodosVisitados.add(arbitrary);
-                   Q.insert(arbitrary);
-                   caminhoPercorrido.add(arbitrary.dado);
-               }
-           }
-       }
-       
-       return caminhoPercorrido;
-       
+
+        matrixNode arbitrary = listaNodos.get(orig);
+
+        if (arbitrary == null) {
+            throw new GraphException("O nodo de origem não existe no grafo");
+        }
+
+        HashSet<matrixNode> nodosVisitados = new HashSet<>();
+        ArrayList<N> caminhoPercorrido = new ArrayList<>();
+        Queue Q = new Queue();
+
+        nodosVisitados.add(arbitrary);
+        caminhoPercorrido.add(arbitrary.dado);
+        Q.insert(arbitrary);
+
+        while (!Q.isEmpty()) {
+
+            arbitrary = (matrixNode) Q.get().nodo;
+
+            int linhaNodo = matrizAdjacencias.getLinhaDoDado(arbitrary);
+
+            ArrayList<matrixNode> adjacentes = matrizAdjacencias.getAdjacentes(linhaNodo);
+
+            for (matrixNode n : adjacentes) {
+
+                if (nodosVisitados.contains(n) == false) {
+                    arbitrary = n;
+                    if (arbitrary.getDado().equals(orig)) {
+                        return caminhoPercorrido;
+                    }
+                    nodosVisitados.add(arbitrary);
+                    Q.insert(arbitrary);
+                    caminhoPercorrido.add(arbitrary.dado);
+                }
+            }
+        }
+
+        return caminhoPercorrido;
+
     }
 
     @Override
@@ -162,24 +167,25 @@ public class Graph<N,A,E> implements GraphTAD<N,A> {
             caminhoPercorrido.add(listaNodos.get(dest).dado);
             return caminhoPercorrido;
         }
+        
         matrixNode arbitrary = listaNodos.get(atual);
-
+        
         nodosMarcados.add(arbitrary);
         caminhoPercorrido.add(arbitrary.dado);
 
         int linhaNodo = matrizAdjacencias.getLinhaDoDado(arbitrary);
         ArrayList<matrixNode> adjacentes = matrizAdjacencias.getAdjacentes(linhaNodo);
-        
+
         List<N> resultado = null;
         for (matrixNode n : adjacentes) {
             if (nodosMarcados.contains(n) == false) {
                 resultado = findPath((N) n.getDado(), dest, nodosMarcados, caminhoPercorrido);
             }
-            if(resultado != null) return resultado;
-            caminhoPercorrido.clear();
-            caminhoPercorrido.add(listaNodos.get(atual).dado);
+            if (resultado != null) {
+                return resultado;
+            }
         }
-
+        caminhoPercorrido.remove(atual);
         return null;
     }
 
@@ -190,16 +196,16 @@ public class Graph<N,A,E> implements GraphTAD<N,A> {
 
     @Override
     public Iterator<N> iteratorWidth(N origem) throws GraphException {
-        
+
         return traversalWidth(origem).iterator();
-        
+
     }
 
     @Override
     public Iterator<N> iteratorDepth(N origem) throws GraphException {
-        
+
         return traversalDepth(origem).iterator();
-        
+
     }
 
     public String GenericArrayToString(List<N> l) {
@@ -214,33 +220,20 @@ public class Graph<N,A,E> implements GraphTAD<N,A> {
         }
         return resultado;
     }
-    
-    public String GenericIteratorToString(Iterator<N> l) {
-
-        if (l == null) {
-            return null;
-        }
-
-        String resultado = "";
-        while(l.hasNext())
-            resultado += l.next() + " ";
-        return resultado;
-    }
 
     @Override
     public String toString() {
-        
-        //TODO passar de hashmap para arraylist para ter ordem!!!!!
-        
+
         String resultado = "";
         for (matrixNode n : listaNodos.values()) {
 
             resultado += n.getDado() + "(";
             int linhaNodo = matrizAdjacencias.getLinhaDoDado(n);
             ArrayList<matrixNode> adjacentes = matrizAdjacencias.getAdjacentes(linhaNodo);
-            for (matrixNode p : adjacentes)
+            for (matrixNode p : adjacentes) {
                 resultado += "[" + p.getDado() + "-" + matrizAdjacencias.getDado(linhaNodo, matrizAdjacencias.getLinhaDoDado(p)) + "]";
-                
+            }
+
             resultado += ")";
         }
         return resultado;
