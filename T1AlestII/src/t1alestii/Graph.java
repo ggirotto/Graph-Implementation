@@ -31,7 +31,47 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
         listaNodos = new LinkedHashMap<>();
 
     }
+    
+    private class IteratorDepth<N> implements Iterator<N>{
+        
+        private N current;
+        
+        public IteratorDepth(N origem){
+            current = origem;
+        }
+        
+        @Override
+        public boolean hasNext() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
 
+        @Override
+        public N next() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+        
+    }
+    
+    private class IteratorWidth<N> implements Iterator<N>{
+        
+        private matrixNode current;
+        
+        public IteratorWidth(matrixNode origem){
+            current = origem;
+        }
+        
+        @Override
+        public boolean hasNext() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public N next() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+        
+    }
+    
     @Override
     public void addNode(N elem) {
 
