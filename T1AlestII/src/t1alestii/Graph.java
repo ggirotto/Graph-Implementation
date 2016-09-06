@@ -33,45 +33,73 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
     }
     
     private class IteratorDepth<N> implements Iterator<N>{
+        // PILHA
+        // ESTRUTURA DE MARCACAO
+        private matrixNode current;
+        private final HashSet<matrixNode> listaMarcados;
+        private final Stack pilha;
         
-        private N current;
-        
-        public IteratorDepth(N origem){
+        public IteratorDepth(matrixNode origem){
             current = origem;
+            listaMarcados = new HashSet<>();
+            pilha = new Stack();
+            listaMarcados.add(origem);
+            pilha.push(origem);
         }
         
         @Override
         public boolean hasNext() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            return !pilha.isEmpty(); // Verificar se é isso mesmo
         }
 
         @Override
         public N next() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            
+            current = (matrixNode) pilha.pop().data;
+            
+            int linhaNodo = matrizAdjacencias.getLinhaDoDado(current);
+            ArrayList<matrixNode> adjacentes = matrizAdjacencias.getAdjacentes(linhaNodo);
+            
+            //TODO
         }
         
     }
     
     private class IteratorWidth<N> implements Iterator<N>{
+        // FILA
+        // ESTRTUURA DE MARCACAO
+        private matrixNode origem;
+        private final HashSet<matrixNode> nodosMarcados;
+        private final Queue fila;
         
-        private final List caminho;
-        private int index;
-        
-        public IteratorWidth(matrixNode origem) throws GraphException{
-            caminho = traversalWidth(origem.getDado());
-            index = 0;
+        public IteratorWidth(matrixNode origem) {
+            this.origem = origem;
+            nodosMarcados = new HashSet<>();
+            fila = new Queue();
+            nodosMarcados.add(origem);
+            fila.insert(origem);
         }
         
         @Override
         public boolean hasNext() {
-            return index != caminho.size();
+            return !fila.isEmpty();
         }
 
         @Override
         public N next() {
-            N dado = (N) caminho.get(index);
-            index++;
-            return dado;
+            origem = (matrixNode) fila.get().nodo;
+            int linhaNodo = matrizAdjacencias.getLinhaDoDado(origem);
+
+            ArrayList<matrixNode> adjacentes = matrizAdjacencias.getAdjacentes(linhaNodo);
+
+            for (matrixNode n : adjacentes){
+                if(nodosMarcados.contains(n)==false){
+                    fila.insert(n);
+                    nodosMarcados.add(n);
+                }  
+            }
+            
+            return (N) origem.getDado();
         }
         
     }
@@ -235,7 +263,9 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
 
     @Override
     public int size() {
+        
         return listaNodos.size();
+        
     }
 
     @Override

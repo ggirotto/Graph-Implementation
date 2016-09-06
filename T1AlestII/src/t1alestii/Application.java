@@ -1,5 +1,6 @@
 package t1alestii;
 // TODO: Unificar NODOS
+import java.util.Iterator;
 import java.util.Scanner;
 
 
@@ -31,7 +32,7 @@ public class Application {
             
             if(line.equals("td")) System.out.println(grafo.GenericArrayToString(grafo.traversalDepth(in.next())));
             
-            //if(line.equals("it")) System.out.println(grafo.GenericIteratorToString(grafo.iteratorWidth(in.next())));
+            if(line.equals("testeIw")) testeIw(grafo.iteratorWidth(in.next()));
             
             //if(line.equals("id")) System.out.println(grafo.GenericIteratorToString(grafo.iteratorDepth(in.next())));
             
@@ -40,5 +41,13 @@ public class Application {
             System.out.println(grafo.toString());
             
         }
+    }
+    
+    public static void testeIw(Iterator iterador){
+        
+        while(iterador.hasNext()){
+            System.out.print(iterador.next() + " ");
+        }
+        System.out.println();
     }
 }
