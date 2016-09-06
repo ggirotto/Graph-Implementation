@@ -54,20 +54,24 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
     
     private class IteratorWidth<N> implements Iterator<N>{
         
-        private matrixNode current;
+        private final List caminho;
+        private int index;
         
-        public IteratorWidth(matrixNode origem){
-            current = origem;
+        public IteratorWidth(matrixNode origem) throws GraphException{
+            caminho = traversalWidth(origem.getDado());
+            index = 0;
         }
         
         @Override
         public boolean hasNext() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            return index != caminho.size();
         }
 
         @Override
         public N next() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            N dado = (N) caminho.get(index);
+            index++;
+            return dado;
         }
         
     }
@@ -237,14 +241,14 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
     @Override
     public Iterator<N> iteratorWidth(N origem) throws GraphException {
 
-        return traversalWidth(origem).iterator();
+        return new IteratorWidth(listaNodos.get(origem));
 
     }
 
     @Override
     public Iterator<N> iteratorDepth(N origem) throws GraphException {
 
-        return traversalDepth(origem).iterator();
+        return new IteratorDepth(listaNodos.get(origem));
 
     }
 
