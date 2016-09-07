@@ -12,7 +12,7 @@ public interface GraphTAD <N,A > extends IterableGraph <N>  {
  /**
   * Adiciona uma nova aresta no grafo.
   */
- public abstract void addEdge(N orig, N dest, A val);
+ public abstract void addEdge(N orig, N dest, A val) throws GraphException;
 
  /**
   * Remove um nodo do grafo, junto com todas as arestas que incidem de e para o nodo.
@@ -38,7 +38,7 @@ public interface GraphTAD <N,A > extends IterableGraph <N>  {
  /**
   * Retorna um caminho qualquer entre dois nodos.
   */
- public abstract List < N > findPath(N orig, N dest);
+ public abstract List < N > findPath(N orig, N dest) throws GraphException;
 
  /**
   * Retorna o n�mero de nodos de um grafo.

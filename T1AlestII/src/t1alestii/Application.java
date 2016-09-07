@@ -34,7 +34,7 @@ public class Application {
             
             if(line.equals("testeIw")) testeIw(grafo.iteratorWidth(in.next()));
             
-            //if(line.equals("id")) System.out.println(grafo.GenericIteratorToString(grafo.iteratorDepth(in.next())));
+            if(line.equals("testeid")) testeIw(grafo.iteratorDepth(in.next()));
             
             if(line.equals("quit")) System.exit(0);
             

@@ -56,11 +56,18 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
         public N next() {
             
             current = (matrixNode) pilha.pop().data;
+            listaMarcados.add(current);
             
             int linhaNodo = matrizAdjacencias.getLinhaDoDado(current);
             ArrayList<matrixNode> adjacentes = matrizAdjacencias.getAdjacentes(linhaNodo);
             
-            //TODO
+            for(matrixNode n : adjacentes){
+                if(listaMarcados.contains(n) == false){
+                    pilha.push(n);
+                }
+            }
+            
+            return (N) current.getDado();
         }
         
     }
@@ -114,11 +121,14 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
     }
 
     @Override
-    public void addEdge(N orig, N dest, A val) {
+    public void addEdge(N orig, N dest, A val) throws GraphException{
 
         matrixNode nodoOrigem = listaNodos.get(orig);
+        if(nodoOrigem == null) throw new GraphException("O nodo de origem não existe no grafo");
+        
         matrixNode nodoDestino = listaNodos.get(dest);
-
+        if(nodoDestino == null) throw new GraphException("O nodo de destino não existe no grafo");
+        
         matrizAdjacencias.addEdge(nodoOrigem, nodoDestino, val);
 
     }
@@ -152,8 +162,9 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
     }
 
     @Override
-    public List<N> traversalDepth(N orig) {
-
+    public List<N> traversalDepth(N orig) throws GraphException{
+        
+        if(listaNodos.containsKey(orig) == false) throw new GraphException("O nodo de origem não existe no grafo");
         ArrayList<N> caminhoPercorrido = new ArrayList<>();
         HashSet<matrixNode> nodosMarcados = new HashSet<>();
         traversalDepth(orig, caminhoPercorrido, nodosMarcados);
@@ -225,8 +236,10 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
     }
 
     @Override
-    public List<N> findPath(N orig, N dest) {
-
+    public List<N> findPath(N orig, N dest) throws GraphException{
+        
+        if(listaNodos.containsKey(orig) == false) throw new GraphException("O nodo de origem não existe no grafo");
+        if(listaNodos.containsKey(dest) == false) throw new GraphException("O nodo de destino não existe no grafo");
         HashSet<matrixNode> nodosMarcados = new HashSet<>();
         ArrayList<N> caminhoPercorrido = new ArrayList<>();
         return findPath(orig, dest, nodosMarcados, caminhoPercorrido);
@@ -270,14 +283,16 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
 
     @Override
     public Iterator<N> iteratorWidth(N origem) throws GraphException {
-
+        
+        if(listaNodos.containsKey(origem) == false) throw new GraphException("O nodo de origem não existen no grafo");
         return new IteratorWidth(listaNodos.get(origem));
 
     }
 
     @Override
     public Iterator<N> iteratorDepth(N origem) throws GraphException {
-
+        
+        if(listaNodos.containsKey(origem) == false) throw new GraphException("O nodo de origem não existen no grafo");
         return new IteratorDepth(listaNodos.get(origem));
 
     }
@@ -312,5 +327,15 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
         }
         return resultado;
     }
-
+    
+    public ArrayList<N> getAdjacentes(N dado){
+        
+        matrixNode arbitrary = listaNodos.get(dado);
+        int linhaNodo = matrizAdjacencias.getLinhaDoDado(arbitrary);
+        ArrayList<matrixNode> adjacentes = matrizAdjacencias.getAdjacentes(linhaNodo);
+        ArrayList<N> adj = new ArrayList<>();
+        for(matrixNode n : adjacentes)
+            adj.add(n.getDado());
+        return adj;
+    }
 }

@@ -63,7 +63,7 @@ public class Matrix<N> {
 
     }
 
-    public void removeEdge(matrixNode orig, matrixNode dest, N aresta) {
+    public void removeEdge(matrixNode orig, matrixNode dest, N aresta) throws GraphException {
 
         int linha = posicaoMatrix.get(orig);
         int coluna = posicaoMatrix.get(dest);
@@ -72,7 +72,8 @@ public class Matrix<N> {
         /*
             Se só possui uma aresta, setar o campo para null sinalizando que não existem arestas
          */
-        if (o.isEmpty()) {
+        if(o == null) throw new GraphException("A aresta escolhida não existe no grafo");
+        if (o.size() == 1) {
             matrix[linha][coluna] = null;
         }
         // Senão, somente remove o valor da aresta em questão
