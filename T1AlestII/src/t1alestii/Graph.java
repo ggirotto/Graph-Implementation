@@ -55,19 +55,28 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
         @Override
         public N next() {
             
-            current = (matrixNode) pilha.pop().data;
+            N dado = (N) current.getDado();
             listaMarcados.add(current);
+            current = findNextCurrent(current);
+            return dado;
+            
+        }
+        
+        private matrixNode findNextCurrent(matrixNode current){
             
             int linhaNodo = matrizAdjacencias.getLinhaDoDado(current);
+
             ArrayList<matrixNode> adjacentes = matrizAdjacencias.getAdjacentes(linhaNodo);
             
             for(matrixNode n : adjacentes){
                 if(listaMarcados.contains(n) == false){
-                    pilha.push(n);
+                    pilha.push(current);
+                    return n;
                 }
             }
+            if(pilha.isEmpty()) return null;
             
-            return (N) current.getDado();
+            return findNextCurrent((matrixNode)pilha.pop().data);
         }
         
     }
