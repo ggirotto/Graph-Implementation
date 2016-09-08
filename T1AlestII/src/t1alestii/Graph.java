@@ -182,7 +182,7 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
 
         matrixNode arbitrary = listaNodos.get(orig);
 
-        caminhoPercorrido.add(arbitrary.dado);
+        caminhoPercorrido.add(arbitrary.getDado());
         nodosMarcados.add(arbitrary);
 
         ArrayList<matrixNode> adjacentes = getAdjacentes(arbitrary.getDado());
@@ -211,7 +211,7 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
         Queue Q = new Queue();
 
         nodosVisitados.add(arbitrary);
-        caminhoPercorrido.add(arbitrary.dado);
+        caminhoPercorrido.add(arbitrary.getDado());
         Q.insert(arbitrary);
 
         while (!Q.isEmpty()) {
@@ -229,7 +229,7 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
                     }
                     nodosVisitados.add(arbitrary);
                     Q.insert(arbitrary);
-                    caminhoPercorrido.add(arbitrary.dado);
+                    caminhoPercorrido.add(arbitrary.getDado());
                 }
             }
         }
@@ -252,14 +252,14 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
     private List<N> findPath(N atual, N dest, HashSet<matrixNode> nodosMarcados, ArrayList<N> caminhoPercorrido) {
 
         if (atual.equals(dest)) {
-            caminhoPercorrido.add(listaNodos.get(dest).dado);
+            caminhoPercorrido.add(listaNodos.get(dest).getDado());
             return caminhoPercorrido;
         }
         
         matrixNode arbitrary = listaNodos.get(atual);
         
         nodosMarcados.add(arbitrary);
-        caminhoPercorrido.add(arbitrary.dado);
+        caminhoPercorrido.add(arbitrary.getDado());
 
         ArrayList<matrixNode> adjacentes = getAdjacentes(arbitrary.getDado());
 
