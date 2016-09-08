@@ -16,6 +16,7 @@ import static org.junit.Assert.*;
 /**
  *
  * @author guilhermegirotto
+ * @param <N>
  */
 public class GraphTest<N> {
     
@@ -39,11 +40,13 @@ public class GraphTest<N> {
         Graph instance = new Graph();
         assertEquals(instance.size(),0);
         instance.addNode(10);
+        // Adiciona o nodo e testa para ver se o número de nodos aumentou em 1
         assertEquals(instance.size(),1);
     }
 
     /**
      * Teste para adicionar uma aresta
+     * @throws t1alestii.GraphException
      */
     @Test
     public void testAddEdge() throws GraphException{
@@ -52,10 +55,16 @@ public class GraphTest<N> {
         instance.addNode(10);
         instance.addNode(11);
         instance.addEdge(10, 11, 12);
+        
+        // Pega os adjacentes ao 10 para ver se a aresta foi mesmo adicionada
+        ArrayList<Integer> adjacentes = instance.getAdjacentesDados(10);
+        // Garante que o 11 é adjacente ao 10
+        assertTrue(adjacentes.contains(11));
     }
     
     /**
      * Teste para adicionar uma aresta sem nodo origem
+     * @throws t1alestii.GraphException
      */
     @Test (expected=GraphException.class)
     public void testAddEdgeSemNodoOrigem() throws GraphException{
@@ -63,10 +72,12 @@ public class GraphTest<N> {
         Graph instance = new Graph();
         instance.addNode(11);
         instance.addEdge(10, 11, 12);
+        // Espera uma exceção, já que o nodo de origem não existe
     }
     
     /**
      * Teste para adicionar uma aresta sem nodo destino
+     * @throws t1alestii.GraphException
      */
     @Test (expected=GraphException.class)
     public void testAddEdgeSemNodoDestino() throws GraphException{
@@ -74,13 +85,15 @@ public class GraphTest<N> {
         Graph instance = new Graph();
         instance.addNode(10);
         instance.addEdge(10, 11, 12);
+        // Espera uma exceção, já que o nodo de destino não existe
     }
     
     /**
      * Teste para remover um nodo
+     * @throws t1alestii.GraphException
      */
     @Test
-    public void testRemoveNode() throws Exception {
+    public void testRemoveNode() throws GraphException {
         System.out.println("removeNode");
         Graph instance = new Graph();
         assertEquals(instance.size(),0);
@@ -88,22 +101,26 @@ public class GraphTest<N> {
         assertEquals(instance.size(),1);
         instance.removeNode(10);
         assertEquals(instance.size(),0);
+        // Garante que quando um nodo é removido o número de nodos de um grafo é decrementado
     }
 
     /**
      * Teste para remover um nodo inexistente
+     * @throws t1alestii.GraphException
      */
     @Test (expected=GraphException.class)
-    public void testRemoveNodeInexistente() throws Exception {
+    public void testRemoveNodeInexistente() throws GraphException {
         System.out.println("removeNode inexistente");
         Graph instance = new Graph();
         instance.addNode(10);
         instance.removeNode(15);
         assertEquals(instance.size(),1);
+        //Garante que o nodo não foi removido e aguarda uma exceção, já que ele não existe
     }
     
     /**
      * Teste para remover uma aresta
+     * @throws t1alestii.GraphException
      */
     @Test
     public void testRemoveEdge() throws GraphException {
@@ -112,22 +129,31 @@ public class GraphTest<N> {
         instance.addNode(10);
         instance.addNode(11);
         
-        ArrayList<N> adjacentes = instance.getAdjacentes(10);
+        ArrayList<N> adjacentes = instance.getAdjacentesDados(10);
         assertEquals(adjacentes.size(),0);
+        // Garante que o nodo 10 não possui nenhum adjacente
         
         instance.addEdge(10, 11, 15);
+        // Adiciona a aresta entre 10 e 11
+        // Isto é assumido que funciona com base no teste anterior de adição de aresta
         
-        adjacentes = instance.getAdjacentes(10);
+        adjacentes = instance.getAdjacentesDados(10);
         assertEquals(adjacentes.size(),1);
+        // Pega novamente a lista de adjacentes, e garante que exsite uma nova aresta lá
+        assertEquals(adjacentes.get(0),11);
+        // Garante que este cara, de fato é o 11
         
         instance.removeEdge(10, 11, 15);
+        // Remove a aresta
         
-        adjacentes = instance.getAdjacentes(10);
+        adjacentes = instance.getAdjacentesDados(10);
         assertEquals(adjacentes.size(),0);
+        // Confrima que o 10 passar a não possuir mais arestas
     }
     
     /**
      * Teste para remover uma aresta inexistente
+     * @throws t1alestii.GraphException
      */
     @Test (expected=GraphException.class)
     public void testRemoveEdgeInexistente() throws GraphException {
@@ -136,17 +162,20 @@ public class GraphTest<N> {
         instance.addNode(10);
         instance.addNode(11);
         
-        ArrayList<N> adjacentes = instance.getAdjacentes(10);
+        ArrayList<N> adjacentes = instance.getAdjacentesDados(10);
         assertEquals(adjacentes.size(),0);
         
         instance.removeEdge(10, 11, 15);
         
-        adjacentes = instance.getAdjacentes(10);
+        adjacentes = instance.getAdjacentesDados(10);
         assertEquals(adjacentes.size(),0);
+        // Garante que o número de adjacentes permaneceu o mesmo
+        // Espera uma exceção, já que a aresta não existe
     }
     
     /**
      * Teste de caminhamento em profundidade
+     * @throws t1alestii.GraphException
      */
     @Test
     public void testTraversalDepth() throws GraphException{
@@ -172,11 +201,23 @@ public class GraphTest<N> {
         instance.addEdge(1, 6, 10);
         instance.addEdge(5, 6, 10);
         List<N> caminho = instance.traversalDepth(0);
-        assertEquals(caminho.size(),instance.size());
+        List<Integer> caminhoTesteDeMesa = new ArrayList<>();
+        caminhoTesteDeMesa.add(0);
+        caminhoTesteDeMesa.add(2);
+        caminhoTesteDeMesa.add(1);
+        caminhoTesteDeMesa.add(6);
+        caminhoTesteDeMesa.add(3);
+        caminhoTesteDeMesa.add(4);
+        caminhoTesteDeMesa.add(5);
+        assertEquals(caminho,caminhoTesteDeMesa);
+        
+        // Foi feito o teste de mesa para o caminhamento em profundidade para o grafo criado
+        // Garante que o resultado do algorimo é o mesmo do teste de mesa
     }
     
     /**
      * Teste de caminhamento em profundidade com nodo de origem inexistente
+     * @throws t1alestii.GraphException
      */
     @Test (expected=GraphException.class)
     public void testTraversalDepthSemOrigem() throws GraphException{
@@ -202,13 +243,16 @@ public class GraphTest<N> {
         instance.addEdge(1, 6, 10);
         instance.addEdge(5, 6, 10);
         List<N> caminho = instance.traversalDepth(15);
-        assertEquals(caminho.size(),0);
+        assertEquals(caminho,null);
+        // Não retorna nenhuma caminho já que o nodo de origem não existe
+        // Aguarda uma exceção
     }
     /**
      * Teste do caminhamento em largura
+     * @throws t1alestii.GraphException
      */
     @Test
-    public void testTraversalWidth() throws Exception {
+    public void testTraversalWidth() throws GraphException {
         System.out.println("traversalWidth");
         Graph instance = new Graph();
         instance.addNode(0);
@@ -230,8 +274,19 @@ public class GraphTest<N> {
         instance.addEdge(4, 5, 10);
         instance.addEdge(1, 6, 10);
         instance.addEdge(5, 6, 10);
-        List<N> caminho = instance.traversalDepth(0);
-        assertEquals(caminho.size(),instance.size());
+        List<N> caminho = instance.traversalWidth(0);
+        List<Integer> caminhoTesteDeMesa = new ArrayList<>();
+        caminhoTesteDeMesa.add(0);
+        caminhoTesteDeMesa.add(2);
+        caminhoTesteDeMesa.add(3);
+        caminhoTesteDeMesa.add(1);
+        caminhoTesteDeMesa.add(4);
+        caminhoTesteDeMesa.add(5);
+        caminhoTesteDeMesa.add(6);
+        assertEquals(caminho,caminhoTesteDeMesa);
+        
+        // Foi feito o teste de mesa para o caminhamento em profundidade para o grafo criado
+        // Garante que o resultado do algorimo é o mesmo do teste de mesa
     }
     
     /**
@@ -261,10 +316,15 @@ public class GraphTest<N> {
         instance.addEdge(1, 6, 10);
         instance.addEdge(5, 6, 10);
         List<N> caminho = instance.traversalDepth(15);
-        assertEquals(caminho.size(),0);
+        assertEquals(caminho,null);
+        
+        // Não retorna nenhuma caminho já que o nodo de origem não existe
+        // Aguarda uma exceção
+        
     }
     /**
      * Teste do findpath
+     * @throws t1alestii.GraphException
      */
     @Test
     public void testFindPath() throws GraphException{
@@ -290,11 +350,20 @@ public class GraphTest<N> {
         instance.addEdge(1, 6, 10);
         instance.addEdge(5, 6, 10);
         List<N> path = instance.findPath(0, 6);
-        assertTrue(path.size()>0);
+        List<Integer> caminhoTesteDeMesa = new ArrayList<>();
+        caminhoTesteDeMesa.add(0);
+        caminhoTesteDeMesa.add(2);
+        caminhoTesteDeMesa.add(1);
+        caminhoTesteDeMesa.add(6);
+        assertEquals(path,caminhoTesteDeMesa);
+        
+        // Foi feito o teste de mesa para o caminhamento em profundidade para o grafo criado
+        // Garante que o resultado do algorimo é o mesmo do teste de mesa
     }
     
     /**
      * Teste do findpath quando não existe caminho
+     * @throws t1alestii.GraphException
      */
     @Test
     public void testFindPathSemCaminho() throws GraphException{
@@ -320,11 +389,14 @@ public class GraphTest<N> {
         instance.addEdge(1, 6, 10);
         instance.addEdge(5, 6, 10);
         List<N> path = instance.findPath(5, 0);
-        assertTrue(path == null);
+        assertEquals(path,null);
+        
+        // Não retorna nenhuma caminho já que não existe caminho entre os nodos
     }
     
     /**
      * Teste do findpath sem nodo de origem
+     * @throws t1alestii.GraphException
      */
     @Test (expected=GraphException.class)
     public void testFindPathSemNodoOrigem() throws GraphException{
@@ -350,11 +422,15 @@ public class GraphTest<N> {
         instance.addEdge(1, 6, 10);
         instance.addEdge(5, 6, 10);
         List<N> path = instance.findPath(15, 5);
-        assertTrue(path.isEmpty());
+        assertEquals(path,null);
+        
+        // Não retorna nenhuma caminho já que o nodo de origem não existe
+        // Aguarda uma exceção
     }
     
     /**
      * Teste do findpath sem nodo de destino
+     * @throws t1alestii.GraphException
      */
     @Test (expected=GraphException.class)
     public void testFindPathSemNodoDestino() throws GraphException{
@@ -380,7 +456,10 @@ public class GraphTest<N> {
         instance.addEdge(1, 6, 10);
         instance.addEdge(5, 6, 10);
         List<N> path = instance.findPath(0, 12);
-        assertTrue(path.isEmpty());
+        assertEquals(path,null);
+        
+        // Não retorna nenhuma caminho já que o nodo de destino não existe
+        // Aguarda uma exceção
     }
     /**
      * Teste para verificar o tamanho do grafo
@@ -392,10 +471,13 @@ public class GraphTest<N> {
         assertEquals(instance.size(),0);
         instance.addNode(1);
         assertEquals(instance.size(),1);
+        
+        // Garante que ao adicionar um nodo o numero de nodos do grafo aumenta
     }
 
     /**
      * Teste do iterador em largura
+     * @throws t1alestii.GraphException
      */
     @Test
     public void testIteratorWidth() throws GraphException {
@@ -425,12 +507,20 @@ public class GraphTest<N> {
         List<N> caminhoIterador = new ArrayList<>();
         while(iterador.hasNext())
             caminhoIterador.add((N)iterador.next());
-        for(int i=0; i<caminho.size(); i++)
-            assertEquals(caminho.get(i),caminhoIterador.get(i));
+        
+        assertEquals(caminho,caminhoIterador);
+        
+        /*
+            Como ja foi garantido que o caminhamento em largura funciona, neste teste o
+            grafo começa iterando da mesma origem e vai até o fim. A cada nodo passado
+            pelo iterador, este é adicionado em uma lista. No final, a lista que o caminhamento
+            retorna e a que o iterador forma, são comparadas, e estas tem de ser identicas.
+        */
     }
     
     /**
      * Teste do iterador em largura sem nodo origem
+     * @throws t1alestii.GraphException
      */
     @Test (expected=GraphException.class)
     public void testIteratorWidthSemOrigem() throws GraphException {
@@ -456,15 +546,18 @@ public class GraphTest<N> {
         instance.addEdge(1, 6, 10);
         instance.addEdge(5, 6, 10);
         Iterator iterador = instance.iteratorWidth(15);
-        
         assertEquals(iterador,null);
+        
+        // Garante iterador nulo, já que o nodo de origem não existe
+        // Espera uma exceção
     }
     
     /**
      * Teste de iterador em profundidade
+     * @throws t1alestii.GraphException
      */
     @Test
-    public void testIteratorDepth() throws Exception {
+    public void testIteratorDepth() throws GraphException {
         System.out.println("iteratorDepth");
         Graph instance = new Graph();
         instance.addNode(0);
@@ -491,12 +584,20 @@ public class GraphTest<N> {
         List<N> caminhoIterador = new ArrayList<>();
         while(iterador.hasNext())
             caminhoIterador.add((N)iterador.next());
-        for(int i=0; i<caminho.size(); i++)
-            assertEquals(caminho.get(i),caminhoIterador.get(i));
+        
+        assertEquals(caminho,caminhoIterador);
+        
+        /*
+            Como ja foi garantido que o caminhamento em profundidade funciona, neste teste o
+            grafo começa iterando da mesma origem e vai até o fim. A cada nodo passado
+            pelo iterador, este é adicionado em uma lista. No final, a lista que o caminhamento
+            retorna e a que o iterador forma, são comparadas, e estas tem de ser identicas.
+        */
     }
     
     /**
      * Teste do iterador em profundidade sem nodo origem
+     * @throws t1alestii.GraphException
      */
     @Test (expected=GraphException.class)
     public void testIteratorDepthSemOrigem() throws GraphException {
@@ -524,6 +625,9 @@ public class GraphTest<N> {
         Iterator iterador = instance.iteratorDepth(15);
         
         assertEquals(iterador,null);
+        
+        // Garante iterador nulo, já que o nodo de origem não existe
+        // Espera uma exceção
     }
     
 }

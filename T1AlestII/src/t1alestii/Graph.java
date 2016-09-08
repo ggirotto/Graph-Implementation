@@ -64,9 +64,7 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
         
         private matrixNode findNextCurrent(matrixNode current){
             
-            int linhaNodo = matrizAdjacencias.getLinhaDoDado(current);
-
-            ArrayList<matrixNode> adjacentes = matrizAdjacencias.getAdjacentes(linhaNodo);
+            ArrayList<matrixNode> adjacentes = getAdjacentes(current.getDado());
             
             for(matrixNode n : adjacentes){
                 if(listaMarcados.contains(n) == false){
@@ -74,7 +72,7 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
                     return n;
                 }
             }
-            if(pilha.isEmpty()) return null;
+            if(!hasNext()) return null;
             
             return findNextCurrent((matrixNode)pilha.pop().data);
         }
@@ -104,9 +102,8 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
         @Override
         public N next() {
             origem = (matrixNode) fila.get().nodo;
-            int linhaNodo = matrizAdjacencias.getLinhaDoDado(origem);
-
-            ArrayList<matrixNode> adjacentes = matrizAdjacencias.getAdjacentes(linhaNodo);
+            
+            ArrayList<matrixNode> adjacentes = getAdjacentes(origem.getDado());
 
             for (matrixNode n : adjacentes){
                 if(nodosMarcados.contains(n)==false){
@@ -188,8 +185,7 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
         caminhoPercorrido.add(arbitrary.dado);
         nodosMarcados.add(arbitrary);
 
-        int linhaNodo = matrizAdjacencias.getLinhaDoDado(arbitrary);
-        ArrayList<matrixNode> adjacentes = matrizAdjacencias.getAdjacentes(linhaNodo);
+        ArrayList<matrixNode> adjacentes = getAdjacentes(arbitrary.getDado());
 
         for (matrixNode n : adjacentes) {
             if (nodosMarcados.contains(n) == false) {
@@ -222,9 +218,7 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
 
             arbitrary = (matrixNode) Q.get().nodo;
 
-            int linhaNodo = matrizAdjacencias.getLinhaDoDado(arbitrary);
-
-            ArrayList<matrixNode> adjacentes = matrizAdjacencias.getAdjacentes(linhaNodo);
+            ArrayList<matrixNode> adjacentes = getAdjacentes(arbitrary.getDado());
 
             for (matrixNode n : adjacentes) {
 
@@ -267,8 +261,7 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
         nodosMarcados.add(arbitrary);
         caminhoPercorrido.add(arbitrary.dado);
 
-        int linhaNodo = matrizAdjacencias.getLinhaDoDado(arbitrary);
-        ArrayList<matrixNode> adjacentes = matrizAdjacencias.getAdjacentes(linhaNodo);
+        ArrayList<matrixNode> adjacentes = getAdjacentes(arbitrary.getDado());
 
         List<N> resultado = null;
         for (matrixNode n : adjacentes) {
@@ -327,7 +320,7 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
 
             resultado += n.getDado() + "(";
             int linhaNodo = matrizAdjacencias.getLinhaDoDado(n);
-            ArrayList<matrixNode> adjacentes = matrizAdjacencias.getAdjacentes(linhaNodo);
+            ArrayList<matrixNode> adjacentes = getAdjacentes(n.getDado());
             for (matrixNode p : adjacentes) {
                 resultado += "[" + p.getDado() + "-" + matrizAdjacencias.getDado(linhaNodo, matrizAdjacencias.getLinhaDoDado(p)) + "]";
             }
@@ -337,7 +330,19 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
         return resultado;
     }
     
-    public ArrayList<N> getAdjacentes(N dado){
+    // Pega os nodos adjacentes
+    // Recebe o dado de um matrixNode como argumento
+    private ArrayList<matrixNode> getAdjacentes(N dado){
+        
+        matrixNode arbitrary = listaNodos.get(dado);
+        int linhaNodo = matrizAdjacencias.getLinhaDoDado(arbitrary);
+        ArrayList<matrixNode> adjacentes = matrizAdjacencias.getAdjacentes(linhaNodo);
+        return adjacentes;
+    }
+    
+    // Retorna os dados dos ajacentes ao nodo 'dado'
+    // Criado para facilitar os testes do JUnit visto que ele não tem acesso a classe matrixNode
+    public ArrayList<N> getAdjacentesDados(N dado){
         
         matrixNode arbitrary = listaNodos.get(dado);
         int linhaNodo = matrizAdjacencias.getLinhaDoDado(arbitrary);
@@ -347,4 +352,8 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
             adj.add(n.getDado());
         return adj;
     }
+    
+    
+    
+    
 }
