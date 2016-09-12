@@ -95,6 +95,10 @@ public class Matrix<N> {
             matrix[posicaoMatrix.get(dadoOrigem)][posicaoMatrix.get(dadoDestino)] = o;
         }
     }
+    
+    public ArrayList<Object> getEdge(matrixNode orig, matrixNode dest){
+        return (ArrayList<Object>) matrix[posicaoMatrix.get(orig)][posicaoMatrix.get(dest)];
+    }
 
     private void resize() {
 
