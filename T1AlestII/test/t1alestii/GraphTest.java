@@ -630,4 +630,88 @@ public class GraphTest<N> {
         // Espera uma exceção
     }
     
+    /**
+     * Teste do algoritmo de dijkstra
+     * @throws t1alestii.GraphException
+     */
+    @Test
+    public void testeDijkstra() throws GraphException{
+        System.out.println("Tesde do algoritmo de Dijkstra");
+        Graph instance = new Graph();
+        instance.addNode("A");
+        instance.addNode("B");
+        instance.addNode("C");
+        instance.addNode("D");
+        instance.addNode("E");
+        instance.addNode("F");
+        instance.addEdge("A", "B", 7);
+        instance.addEdge("A", "C", 2);
+        instance.addEdge("C", "E", 8);
+        instance.addEdge("C", "D", 2);
+        instance.addEdge("C", "B", 1);
+        instance.addEdge("B", "D", 3);
+        instance.addEdge("D", "E", 3);
+        instance.addEdge("D", "F", 5);
+        instance.addEdge("E", "F", 1);
+        
+        List<N> distanciaDijkstra = instance.dijkstra("A");
+        
+        List<String> caminhoTesteDeMesa = new ArrayList<>();
+
+        caminhoTesteDeMesa.add("A - 0.0");
+        caminhoTesteDeMesa.add("B - 3.0");
+        caminhoTesteDeMesa.add("C - 2.0");
+        caminhoTesteDeMesa.add("D - 4.0");
+        caminhoTesteDeMesa.add("E - 7.0");
+        caminhoTesteDeMesa.add("F - 8.0");
+        
+        assertEquals(distanciaDijkstra,caminhoTesteDeMesa);
+        
+        // Foi feito o teste de mesa para o resultado que o algoritmo de dijkstra
+        // iria retornar com o input escolhido
+        // Garante que o resultado do algorimo é o mesmo do teste de mesa
+    }
+    
+    /**
+     * Teste do algoritmo de dijkstra sem nodo origem
+     * @throws t1alestii.GraphException
+     */
+    @Test (expected=GraphException.class)
+    public void testeDijkstraSemOrigem() throws GraphException{
+        System.out.println("Tesde do algoritmo de Dijkstra sem nodo origem");
+        Graph instance = new Graph();
+        instance.addNode("A");
+        instance.addNode("B");
+        instance.addNode("C");
+        instance.addNode("D");
+        instance.addNode("E");
+        instance.addNode("F");
+        instance.addEdge("A", "B", 7);
+        instance.addEdge("A", "C", 2);
+        instance.addEdge("C", "E", 8);
+        instance.addEdge("C", "D", 2);
+        instance.addEdge("C", "B", 1);
+        instance.addEdge("B", "D", 3);
+        instance.addEdge("D", "E", 3);
+        instance.addEdge("D", "F", 5);
+        instance.addEdge("E", "F", 1);
+        
+        List<N> distanciaDijkstra = instance.dijkstra("G");
+        
+        List<String> caminhoTesteDeMesa = new ArrayList<>();
+
+        caminhoTesteDeMesa.add("A - 0.0");
+        caminhoTesteDeMesa.add("B - 3.0");
+        caminhoTesteDeMesa.add("C - 2.0");
+        caminhoTesteDeMesa.add("D - 4.0");
+        caminhoTesteDeMesa.add("E - 7.0");
+        caminhoTesteDeMesa.add("F - 8.0");
+        
+        assertEquals(distanciaDijkstra,caminhoTesteDeMesa);
+        
+        // Foi feito o teste de mesa para o resultado que o algoritmo de dijkstra
+        // iria retornar com o input escolhido
+        // Garante que o resultado do algorimo é o mesmo do teste de mesa
+    }
+    
 }

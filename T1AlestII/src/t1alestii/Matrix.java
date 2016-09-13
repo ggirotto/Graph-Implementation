@@ -124,17 +124,6 @@ public class Matrix<N> {
 
     }
 
-    public matrixNode getRepresentante(int coluna) {
-
-        for (Map.Entry<matrixNode, Integer> entry : posicaoMatrix.entrySet()) {
-            if (entry.getValue() == coluna) {
-                return entry.getKey();
-            }
-        }
-
-        return null;
-    }
-
     public ArrayList<matrixNode> getAdjacentes(int linha) {
 
         ArrayList<matrixNode> adjacentes = new ArrayList<>();
@@ -155,20 +144,5 @@ public class Matrix<N> {
 
     public int getLinhaDoDado(matrixNode dado) {
         return posicaoMatrix.get(dado);
-    }
-
-    public matrixNode getElementoLinha(int linha) {
-
-        for (Map.Entry<matrixNode, Integer> entry : posicaoMatrix.entrySet()) {
-            if(entry.getValue() == linha)
-                return entry.getKey();
-        }
-        
-        return null;
-
-    }
-
-    public int getNroColunasDaLinha(int linha) {
-        return matrix[linha].length;
     }
 }

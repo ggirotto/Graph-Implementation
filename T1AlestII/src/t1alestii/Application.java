@@ -20,7 +20,7 @@ public class Application {
             if(line.equals("add")) grafo.addNode(in.next());
             
             // Adiciona uma aresta
-            if(line.equals("aresta")) grafo.addEdge(in.next(), in.next(), in.next());
+            if(line.equals("addaresta")) grafo.addEdge(in.next(), in.next(), in.next());
             
             // Remove um Nodo
             if(line.equals("rnodo")) grafo.removeNode(in.next());

@@ -181,7 +181,10 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
     Requer:
     - Todas aresta devem possuir somente um valor e este deve ser um natural
     */
-    public ArrayList<String> dijkstra(N orig) {
+    public ArrayList<String> dijkstra(N orig) throws GraphException{
+        
+        if(!listaNodos.containsKey(orig)) throw new GraphException("O nodo de origem não existe no grafo");
+        
         LinkedHashMap<matrixNode, Double> hash = dijkstraAlgorithm(orig);
         
         ArrayList<String> resultadoDij = new ArrayList<>();
