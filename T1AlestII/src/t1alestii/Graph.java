@@ -180,23 +180,25 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
         ALGORITMO DE DIJKSTRA
     Requer:
     - Todas aresta devem possuir somente um valor e este deve ser um natural
-    */
-    public ArrayList<String> dijkstra(N orig) throws GraphException{
-        
-        if(!listaNodos.containsKey(orig)) throw new GraphException("O nodo de origem não existe no grafo");
-        
+     */
+    public ArrayList<String> dijkstra(N orig) throws GraphException {
+
+        if (!listaNodos.containsKey(orig)) {
+            throw new GraphException("O nodo de origem não existe no grafo");
+        }
+
         LinkedHashMap<matrixNode, Double> hash = dijkstraAlgorithm(orig);
-        
+
         ArrayList<String> resultadoDij = new ArrayList<>();
 
         for (Map.Entry<matrixNode, Double> entry : hash.entrySet()) {
             String aux = entry.getKey().getDado() + " - " + entry.getValue();
             resultadoDij.add(aux);
         }
-        
+
         return resultadoDij;
     }
-    
+
     private LinkedHashMap<matrixNode, Double> dijkstraAlgorithm(N orig) {
 
         LinkedHashMap<matrixNode, Double> D = new LinkedHashMap<>();
@@ -233,6 +235,51 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
 
         }
 
+        return D;
+    }
+
+    private double edgeCost(matrixNode i, matrixNode j) {
+        
+        ArrayList valoresArestas = matrizAdjacencias.getEdge(i, j);
+        if(valoresArestas == null) return Double.POSITIVE_INFINITY;
+        return Double.parseDouble(valoresArestas.get(0).toString());
+        
+    }
+    
+    private double min(double a, double b){
+        if (a>b) return b;
+        return a;
+    }
+    
+    /*
+    Requer:
+    - Os valores das arestas existentes devem ser numeros
+    - Arestas com mais de um valor, será considerado o primeiro
+    */
+    public double[][] floydAlgorithm() {
+        
+        LinkedHashMap<String,Double> valoresCaminhos = new LinkedHashMap<>();
+        
+        double D[][] = new double[listaNodos.size()][listaNodos.size()];
+        
+        int n = 0,m = 0;
+        
+        for(matrixNode a : listaNodos.values()){
+            for(matrixNode b : listaNodos.values()){
+                D[n][m] = edgeCost(a, b);
+                valoresCaminhos.put(a.getDado()+""+b.getDado()+"", edgeCost(a, b));
+                m++;
+            }
+            n++;
+        }
+        
+        for (int k = 0; k < n; k++) {
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    D[i][j] = min(D[i][j], D[i][k] + D[k][j]);
+                }
+            }
+        }
         return D;
     }
 
