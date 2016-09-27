@@ -62,7 +62,8 @@ public class Matrix<N> {
         }
 
     }
-
+    
+    // Remove aresta valorada
     public void removeEdge(matrixNode orig, matrixNode dest, N aresta) throws GraphException {
 
         int linha = posicaoMatrix.get(orig);
@@ -80,7 +81,23 @@ public class Matrix<N> {
         o.remove(aresta);
 
     }
+    
+    // Remove aresta não-valorada
+    public void removeEdge(matrixNode orig, matrixNode dest) throws GraphException {
 
+        int linha = posicaoMatrix.get(orig);
+        int coluna = posicaoMatrix.get(dest);
+
+        ArrayList<Object> o = (ArrayList<Object>) matrix[linha][coluna];
+        
+        if (o.size() == 1) {
+            if(Integer.parseInt(o.get(0)+"") == -1)
+                matrix[linha][coluna] = null;
+        }
+
+    }
+    
+    // Adiciona aresta valorada
     public void addEdge(matrixNode dadoOrigem, matrixNode dadoDestino, N dadoAresta) {
 
         ArrayList<Object> o = (ArrayList<Object>) matrix[posicaoMatrix.get(dadoOrigem)][posicaoMatrix.get(dadoDestino)];
@@ -92,6 +109,19 @@ public class Matrix<N> {
         } else {
             o = new ArrayList<Object>();
             o.add(dadoAresta);
+            matrix[posicaoMatrix.get(dadoOrigem)][posicaoMatrix.get(dadoDestino)] = o;
+        }
+    }
+    
+    // Adiciona aresta não-valorada
+    public void addEdge(matrixNode dadoOrigem, matrixNode dadoDestino) {
+
+        ArrayList<Object> o = (ArrayList<Object>) matrix[posicaoMatrix.get(dadoOrigem)][posicaoMatrix.get(dadoDestino)];
+
+        if (o == null) {
+            o = new ArrayList<Object>();
+            // DEFINIÇÃO: -1 significa que existe uma aresta porém ela não é valorada
+            o.add(-1);
             matrix[posicaoMatrix.get(dadoOrigem)][posicaoMatrix.get(dadoDestino)] = o;
         }
     }

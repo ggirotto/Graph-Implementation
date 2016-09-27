@@ -130,7 +130,8 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
         listaNodos.put(elem, p);
 
     }
-
+    
+    // Adicionar aresta valorada
     @Override
     public void addEdge(N orig, N dest, A val) throws GraphException {
 
@@ -147,6 +148,23 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
         matrizAdjacencias.addEdge(nodoOrigem, nodoDestino, val);
 
     }
+    
+    // Adiciona aresta não-valorada
+    public void addEdge(N orig, N dest) throws GraphException {
+
+        matrixNode nodoOrigem = listaNodos.get(orig);
+        if (nodoOrigem == null) {
+            throw new GraphException("O nodo de origem não existe no grafo");
+        }
+
+        matrixNode nodoDestino = listaNodos.get(dest);
+        if (nodoDestino == null) {
+            throw new GraphException("O nodo de destino não existe no grafo");
+        }
+
+        matrizAdjacencias.addEdge(nodoOrigem, nodoDestino);
+
+    }
 
     @Override
     public void removeNode(N elem) throws GraphException {
@@ -159,7 +177,8 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
         matrizAdjacencias.removeNodo(remove);
 
     }
-
+    
+    // Remove aresta valorada
     @Override
     public void removeEdge(N orig, N dest, A val) throws GraphException {
 
@@ -175,7 +194,23 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
         matrizAdjacencias.removeEdge(nodoOrigem, nodoDestino, val);
 
     }
+    
+    // Remove aresta não-valorada
+    public void removeEdge(N orig, N dest) throws GraphException {
 
+        matrixNode nodoOrigem = listaNodos.get(orig);
+        matrixNode nodoDestino = listaNodos.get(dest);
+
+        if (nodoOrigem == null) {
+            throw new GraphException("O nodo de origem não existe no grafo");
+        } else if (nodoDestino == null) {
+            throw new GraphException("O nodo de destino não existe no grafo");
+        }
+
+        matrizAdjacencias.removeEdge(nodoOrigem, nodoDestino);
+
+    }
+    
     /*
         ALGORITMO DE DIJKSTRA
     Requer:
@@ -240,8 +275,9 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
 
     private double edgeCost(matrixNode i, matrixNode j) {
         
-        ArrayList valoresArestas = matrizAdjacencias.getEdge(i, j);
+        ArrayList<Object> valoresArestas = matrizAdjacencias.getEdge(i, j);
         if(valoresArestas == null) return Double.POSITIVE_INFINITY;
+        if(valoresArestas.size() == 1 && Integer.parseInt(valoresArestas.get(0)+"") == -1) return Double.POSITIVE_INFINITY;
         return Double.parseDouble(valoresArestas.get(0).toString());
         
     }
@@ -258,8 +294,6 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
     */
     public double[][] floydAlgorithm() {
         
-        LinkedHashMap<String,Double> valoresCaminhos = new LinkedHashMap<>();
-        
         double D[][] = new double[listaNodos.size()][listaNodos.size()];
         
         int n = 0,m = 0;
@@ -267,9 +301,9 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
         for(matrixNode a : listaNodos.values()){
             for(matrixNode b : listaNodos.values()){
                 D[n][m] = edgeCost(a, b);
-                valoresCaminhos.put(a.getDado()+""+b.getDado()+"", edgeCost(a, b));
                 m++;
             }
+            m = 0;
             n++;
         }
         
@@ -280,6 +314,7 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
                 }
             }
         }
+        // TODO -> PQ TA RETORNANDO 6??
         return D;
     }
 

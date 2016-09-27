@@ -19,14 +19,20 @@ public class Application {
             // Adiciona um nodo
             if(line.equals("add")) grafo.addNode(in.next());
             
-            // Adiciona uma aresta
-            if(line.equals("addaresta")) grafo.addEdge(in.next(), in.next(), in.next());
+            // Adiciona uma aresta valorada
+            if(line.equals("addarestav")) grafo.addEdge(in.next(), in.next(), in.next());
+            
+            // Adiciona uma aresta não valorada
+            if(line.equals("addarestanv")) grafo.addEdge(in.next(), in.next());
             
             // Remove um Nodo
             if(line.equals("rnodo")) grafo.removeNode(in.next());
             
-            // Remove uma aresta
-            if(line.equals("raresta")) grafo.removeEdge(in.next(),in.next(),in.next());
+            // Remove uma aresta valorada
+            if(line.equals("rarestav")) grafo.removeEdge(in.next(),in.next(),in.next());
+            
+            // Remove uma aresta não-valorada
+            if(line.equals("rarestanv")) grafo.removeEdge(in.next(),in.next());
             
             // Número de nodos no grafo
             if(line.equals("size")) System.out.println(grafo.size());
@@ -46,8 +52,11 @@ public class Application {
             // Devolve o iterador do caminhamento em profundidade
             if(line.equals("itd")) imprimeIterador(grafo.iteratorDepth(in.next()));
             
-            // Algoritmo de Dijkstra (Bonus)
+            // Algoritmo de Dijkstra
             if(line.equals("dijkstra")) imprimeDijkstra(grafo.dijkstra(in.next()));
+            
+            // Algoritmo de Floyd
+            if(line.equals("floyd")) imprimeFloyd(grafo.floydAlgorithm());
             
             // Encerra
             if(line.equals("quit")) System.exit(0);
@@ -62,7 +71,7 @@ public class Application {
     }
     
     // Método para imprimir um iterador (vai até o fim)
-    public static void imprimeIterador(Iterator iterador){
+    private static void imprimeIterador(Iterator iterador){
         
         while(iterador.hasNext()){
             System.out.print(iterador.next() + " ");
@@ -71,9 +80,24 @@ public class Application {
     }
     
     // Método para imprimir o resultado do algoritmo de Dijkstra
-    public static void imprimeDijkstra(ArrayList<String> result){
+    private static void imprimeDijkstra(ArrayList<String> result){
         
         for(String s : result)
             System.out.println(s);
     }
+    
+    private static void imprimeFloyd(double [][] matrix){
+        
+        for(int i=0; i<matrix.length; i++){
+            for(int j=0; j<matrix[i].length; j++){
+                if(matrix[i][j] == Double.POSITIVE_INFINITY)
+                    System.out.print(matrix[i][j] + "\t");
+                else
+                    System.out.print(matrix[i][j] + "\t\t");
+            }
+            System.out.println();
+        }
+        
+    }
+    
 }
