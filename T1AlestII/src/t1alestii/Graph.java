@@ -275,6 +275,7 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
 
     private double edgeCost(matrixNode i, matrixNode j) {
         
+        if(i.equals(j)) return 0;
         ArrayList<Object> valoresArestas = matrizAdjacencias.getEdge(i, j);
         if(valoresArestas == null) return Double.POSITIVE_INFINITY;
         if(valoresArestas.size() == 1 && Integer.parseInt(valoresArestas.get(0)+"") == -1) return Double.POSITIVE_INFINITY;
@@ -314,7 +315,6 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
                 }
             }
         }
-        // TODO -> PQ TA RETORNANDO 6??
         return D;
     }
 

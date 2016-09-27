@@ -90,10 +90,8 @@ public class Matrix<N> {
 
         ArrayList<Object> o = (ArrayList<Object>) matrix[linha][coluna];
         
-        if (o.size() == 1) {
-            if(Integer.parseInt(o.get(0)+"") == -1)
-                matrix[linha][coluna] = null;
-        }
+        if (o.isEmpty())
+            matrix[linha][coluna] = null;
 
     }
     
@@ -107,7 +105,7 @@ public class Matrix<N> {
                 o.add(dadoAresta);
             }
         } else {
-            o = new ArrayList<Object>();
+            o = new ArrayList<>();
             o.add(dadoAresta);
             matrix[posicaoMatrix.get(dadoOrigem)][posicaoMatrix.get(dadoDestino)] = o;
         }
@@ -119,9 +117,7 @@ public class Matrix<N> {
         ArrayList<Object> o = (ArrayList<Object>) matrix[posicaoMatrix.get(dadoOrigem)][posicaoMatrix.get(dadoDestino)];
 
         if (o == null) {
-            o = new ArrayList<Object>();
-            // DEFINIÇÃO: -1 significa que existe uma aresta porém ela não é valorada
-            o.add(-1);
+            o = new ArrayList<>();
             matrix[posicaoMatrix.get(dadoOrigem)][posicaoMatrix.get(dadoDestino)] = o;
         }
     }
