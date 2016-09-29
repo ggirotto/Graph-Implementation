@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class Application {
     
-    public static void main(String args[]) throws GraphException{
+    public static void main(String args[]){
         
         Graph grafo = new Graph();
         
@@ -20,40 +20,95 @@ public class Application {
             if(line.equals("add")) grafo.addNode(in.next());
             
             // Adiciona uma aresta valorada
-            if(line.equals("addarestav")) grafo.addEdge(in.next(), in.next(), in.next());
+            try{
+                if(line.equals("addarestav")) grafo.addEdge(in.next(), in.next(), in.next());
+            } catch (GraphException e){
+                System.out.println("Exceção " + e + ", tenta novamente");
+                continue;
+            }
             
             // Adiciona uma aresta não valorada
-            if(line.equals("addarestanv")) grafo.addEdge(in.next(), in.next());
+            try{
+                if(line.equals("addarestanv")) grafo.addEdge(in.next(), in.next());
+            } catch (GraphException e){
+                System.out.println("Exceção " + e + ", tenta novamente");
+                continue;
+            }
             
             // Remove um Nodo
-            if(line.equals("rnodo")) grafo.removeNode(in.next());
+            try{
+                if(line.equals("rnodo")) grafo.removeNode(in.next());
+            } catch (GraphException e){
+                System.out.println("Exceção " + e + ", tenta novamente");
+                continue;
+            }
             
             // Remove uma aresta valorada
-            if(line.equals("rarestav")) grafo.removeEdge(in.next(),in.next(),in.next());
+            try{
+                if(line.equals("rarestav")) grafo.removeEdge(in.next(),in.next(),in.next());
+            } catch (GraphException e){
+                System.out.println("Exceção " + e + ", tenta novamente");
+                continue;
+            }
             
             // Remove uma aresta não-valorada
-            if(line.equals("rarestanv")) grafo.removeEdge(in.next(),in.next());
+            try{
+                if(line.equals("rarestanv")) grafo.removeEdge(in.next(),in.next());
+            } catch (GraphException e){
+                System.out.println("Exceção " + e + ", tenta novamente");
+                continue;
+            }
             
             // Número de nodos no grafo
             if(line.equals("size")) System.out.println(grafo.size());
             
             // Encontra um caminho entre dois nodos
-            if(line.equals("findpath")) System.out.println(grafo.GenericArrayToString(grafo.findPath(in.next(),in.next())));
+            try{
+                if(line.equals("findpath")) System.out.println(grafo.GenericArrayToString(grafo.findPath(in.next(),in.next())));
+            } catch (GraphException e){
+                System.out.println("Exceção " + e + ", tenta novamente");
+                continue;
+            }
             
             // Caminhamento em largura
-            if(line.equals("tw")) System.out.println(grafo.GenericArrayToString(grafo.traversalWidth(in.next())));
+            try{
+                if(line.equals("tw")) System.out.println(grafo.GenericArrayToString(grafo.traversalWidth(in.next())));
+            } catch (GraphException e){
+                System.out.println("Exceção " + e + ", tenta novamente");
+                continue;
+            }
             
             // Caminhamento em profundidade
-            if(line.equals("td")) System.out.println(grafo.GenericArrayToString(grafo.traversalDepth(in.next())));
+            try{
+                if(line.equals("td")) System.out.println(grafo.GenericArrayToString(grafo.traversalDepth(in.next())));
+            } catch (GraphException e){
+                System.out.println("Exceção " + e + ", tenta novamente");
+                continue;
+            }
             
             // Devolve o iterador do caminhamento em largura
-            if(line.equals("itw")) imprimeIterador(grafo.iteratorWidth(in.next()));
+            try{
+                if(line.equals("itw")) imprimeIterador(grafo.iteratorWidth(in.next()));
+            } catch (GraphException e){
+                System.out.println("Exceção " + e + ", tenta novamente");
+                continue;
+            }
             
             // Devolve o iterador do caminhamento em profundidade
-            if(line.equals("itd")) imprimeIterador(grafo.iteratorDepth(in.next()));
+            try{
+                if(line.equals("itd")) imprimeIterador(grafo.iteratorDepth(in.next()));
+            } catch (GraphException e){
+                System.out.println("Exceção " + e + ", tenta novamente");
+                continue;
+            }
             
             // Algoritmo de Dijkstra
-            if(line.equals("dijkstra")) imprimeDijkstra(grafo.dijkstra(in.next()));
+            try{
+                if(line.equals("dijkstra")) imprimeDijkstra(grafo.dijkstra(in.next()));
+            } catch (GraphException e){
+                System.out.println("Exceção " + e + ", tenta novamente");
+                continue;
+            }
             
             // Algoritmo de Floyd
             if(line.equals("floyd")) imprimeFloyd(grafo.floydAlgorithm());
