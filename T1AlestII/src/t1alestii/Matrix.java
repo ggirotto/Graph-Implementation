@@ -167,8 +167,26 @@ public class Matrix<N> {
 
         return adjacentes;
     }
+    
+    public ArrayList<matrixNode> getArestasEntrada(matrixNode n){
+        
+        ArrayList<matrixNode> arestasEntrada = new ArrayList<>();
+        int coluna = getPosicaoDado(n);
+        for(int i=0; i<size; i++)
+            if(matrix[i][coluna] != null)
+                arestasEntrada.add(getDadoPosicao(i));
+        return arestasEntrada;
+    }
 
-    public int getLinhaDoDado(matrixNode dado) {
+    public int getPosicaoDado(matrixNode dado) {
         return posicaoMatrix.get(dado);
+    }
+    
+    public matrixNode getDadoPosicao(int posicao){
+        for (Map.Entry<matrixNode, Integer> entry : posicaoMatrix.entrySet()) {
+            if(entry.getValue() == posicao)
+                return entry.getKey();
+        }
+        return null;
     }
 }
