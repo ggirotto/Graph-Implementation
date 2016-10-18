@@ -324,21 +324,51 @@ public class Graph<N, A, E> implements GraphTAD<N, A> {
         ArrayList<N> L = new ArrayList<>();
         Queue S = new Queue();
         
+        S = adicionaNodosSemArestaEntrada(S);
+        
         while(!S.isEmpty()){
             matrixNode n = (matrixNode) S.get().nodo;
             L.add(n.dado);
             ArrayList<matrixNode> adjacentes = getAdjacentes(n.dado);
             for(matrixNode m : adjacentes){
-                //REmove aresta e do grafo
+                arestasRemovidas.add(n.dado+""+m.dado+"");
                 ArrayList<matrixNode> arestasEntrada = matrizAdjacencias.getArestasEntrada(m);
                 // Verifica se arestas removidas é igual a arestasEntrada
-                if(arestasEntrada == null)
+                if(arestasEntradasNulas(m,arestasEntrada,arestasRemovidas))
                     S.insert(m);
             }
         }
         
         return L;
         
+    }
+    
+    private boolean arestasEntradasNulas(matrixNode n, ArrayList<matrixNode> arestasEntrada, ArrayList<String> arestasRemovidas){
+
+        boolean flag = false;
+        
+        for(matrixNode m : arestasEntrada){
+            flag = false;
+            String composicao = m.dado+""+n.dado+"";
+            for(String s : arestasRemovidas){
+                if(s.equals(composicao))
+                    flag = true;
+            }
+            if(flag == false) return false;
+        }
+        
+        return true;
+    }
+    
+    private Queue adicionaNodosSemArestaEntrada(Queue S){
+        
+        for(matrixNode n : listaNodos.values()){
+            ArrayList<matrixNode> result = matrizAdjacencias.getArestasEntrada(n);
+            if(result.isEmpty())
+                S.insert(n);
+        }
+        
+        return S;
     }
     
     private double getValorAresta(matrixNode a, matrixNode b) {

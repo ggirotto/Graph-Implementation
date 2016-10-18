@@ -113,6 +113,9 @@ public class Application {
             // Algoritmo de Floyd
             if(line.equals("floyd")) imprimeFloyd(grafo.floydAlgorithm());
             
+            // Ordem patologica
+            if(line.equals("pato")) System.out.println(grafo.GenericArrayToString(grafo.ordenacaoPatologica()));
+            
             // Encerra
             if(line.equals("quit")) System.exit(0);
             
